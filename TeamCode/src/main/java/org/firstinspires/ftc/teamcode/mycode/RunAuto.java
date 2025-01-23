@@ -15,11 +15,16 @@ import org.firstinspires.ftc.teamcode.PinpointDrive;
 
 @Autonomous(name="We'll be Gamin'", group="Autonomous", preselectTeleOp="We're Gaming")
 public class RunAuto extends LinearOpMode {
+
+    Devices dev = new Devices(hardwareMap);
+    Pose2d initialPose;
+    PinpointDrive drive;
+    LeftAutoTrajectories trajectoryL;
+    RightAutoTrajectories trajectoryR;
+
     @Override
     public void runOpMode() throws InterruptedException {
-
         ListSelector selector = new ListSelector(gamepad1, new String[]{"Left Side", "Right Side"});
-        Devices dev = new Devices(hardwareMap);
         Random rand = new Random();
         ElapsedTime timer = new ElapsedTime();
         ElapsedTime timer2 = new ElapsedTime();
@@ -40,20 +45,20 @@ public class RunAuto extends LinearOpMode {
             if (gamepad1.a && !locked){
                 locked = true;
                 status = "(Locked)";
-                //loadTrajectories(selector.getChoice());
+                loadTrajectory(selector.getChoice());
             }
             if (gamepad1.left_bumper || gamepad1.right_bumper && !locked){
                 selector.inputs(gamepad1.left_bumper, gamepad1.right_bumper);
             }
             //Waiting string
             String waiting = " - Waiting - ";
-            if(timer2.time() < 1.6){
+            if(timer2.time() > 1.6){
                 timer2.reset();
-            }else if(timer2.time() < 1.2) {
+            }else if(timer2.time() > 1.2) {
                 waiting = " - Waiting... - ";
-            }else if(timer2.time() < 0.8){
+            }else if(timer2.time() > 0.8){
                 waiting = " - Waiting.. - ";
-            }else if(timer2.time() < 0.4){
+            }else if(timer2.time() > 0.4){
                 waiting = " - Waiting. - ";
             }
             //Random string
@@ -72,28 +77,35 @@ public class RunAuto extends LinearOpMode {
         telemetry.addLine("4 specimen auto in progress...");
         telemetry.update();
 
-        Pose2d initialPose;
-        PinpointDrive drive;
-
         switch (selector.getChoice()) {
+            case "Left Side":
+                trajectoryL.runTrajectory();
+                break;
+
+            case "Right Side":
+                trajectoryR.runTrajectory();
+                break;
+        }
+    }
+
+    void loadTrajectory(String trajectory){
+        switch (trajectory) {
             case "Left Side":
                 //Setup and run the auto
                 initialPose = new Pose2d(40, 66, Math.toRadians(-180));
                 drive = new PinpointDrive(hardwareMap, initialPose);
-                LeftAutoTrajectories trajectoryL = new LeftAutoTrajectories(drive, initialPose, dev);
-                trajectoryL.runTrajectory();
+                trajectoryL = new LeftAutoTrajectories(drive, initialPose, dev);
                 break;
 
             case "Right Side":
                 //Setup and run the auto
                 initialPose = new Pose2d(-24, 62, Math.toRadians(135)); //-64, 60, Math.toRadians(90)
                 drive = new PinpointDrive(hardwareMap, initialPose);
-                RightAutoTrajectories trajectoryR = new RightAutoTrajectories(drive, initialPose, dev);
-                trajectoryR.runTrajectory();
+                trajectoryR = new RightAutoTrajectories(drive, initialPose, dev);
                 break;
 
             default: //Fail
-                throw new IllegalStateException("Unexpected value: " + selector.getChoice());
+                throw new IllegalStateException("Unexpected value: " + trajectory);
         }
     }
 }
