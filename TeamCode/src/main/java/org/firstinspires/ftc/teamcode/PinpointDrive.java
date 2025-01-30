@@ -27,6 +27,7 @@ import org.firstinspires.ftc.teamcode.messages.PoseMessage;
  */
 @Config
 public class PinpointDrive extends MecanumDrive {
+    @Config
     public static class Params {
         /*
         Set this to the name that your Pinpoint is configured as in your hardware config.
@@ -42,8 +43,9 @@ public class PinpointDrive extends MecanumDrive {
          */
         //These are tuned for 3110-0002-0001 Product Insight #1
         // RR localizer note: These units are inches, presets are converted from mm (which is why they are inexact)
-        public double xOffset = -(3 + 13/16);
-        public double yOffset = -(3 + 12/16);
+
+        public double xPodOffset = 1.175; //1.25; //-(3 + 13/16);
+        public double yPodOffset = -3.175; //-1.875; //-(3 + 12/16); //12
 
         /*
         Set the kind of pods used by your robot. If you're using goBILDA odometry pods, select either
@@ -89,7 +91,7 @@ public class PinpointDrive extends MecanumDrive {
         }
 
         // RR localizer note: don't love this conversion (change driver?)
-        pinpoint.setOffsets(DistanceUnit.MM.fromInches(PARAMS.xOffset), DistanceUnit.MM.fromInches(PARAMS.yOffset));
+        pinpoint.setOffsets(DistanceUnit.MM.fromInches(PARAMS.xPodOffset), DistanceUnit.MM.fromInches(PARAMS.yPodOffset));
 
 
         pinpoint.setEncoderResolution(PARAMS.encoderResolution);

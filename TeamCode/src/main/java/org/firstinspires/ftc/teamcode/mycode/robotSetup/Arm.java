@@ -32,7 +32,7 @@ public class Arm {
             dev.goRail.setVelocity(10000);
             dev.goRail.setTargetPosition(extenstion);
             dev.armAngle.setVelocity(10000);
-            dev.armAngle.setTargetPosition(angle + 150);
+            dev.armAngle.setTargetPosition(angle);
             return false;
         }
     }

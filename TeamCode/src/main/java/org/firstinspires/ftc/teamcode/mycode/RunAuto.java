@@ -16,7 +16,7 @@ import org.firstinspires.ftc.teamcode.PinpointDrive;
 @Autonomous(name="We'll be Gamin'", group="Autonomous", preselectTeleOp="We're Gaming")
 public class RunAuto extends LinearOpMode {
 
-    Devices dev = new Devices(hardwareMap);
+    Devices dev;
     Pose2d initialPose;
     PinpointDrive drive;
     LeftAutoTrajectories trajectoryL;
@@ -24,6 +24,7 @@ public class RunAuto extends LinearOpMode {
 
     @Override
     public void runOpMode() throws InterruptedException {
+        dev = new Devices(hardwareMap);
         ListSelector selector = new ListSelector(gamepad1, new String[]{"Left Side", "Right Side"});
         Random rand = new Random();
         ElapsedTime timer = new ElapsedTime();
@@ -51,15 +52,15 @@ public class RunAuto extends LinearOpMode {
                 selector.inputs(gamepad1.left_bumper, gamepad1.right_bumper);
             }
             //Waiting string
-            String waiting = " - Waiting - ";
+            String waiting = " - Waiting    - ";
             if(timer2.time() > 1.6){
                 timer2.reset();
             }else if(timer2.time() > 1.2) {
                 waiting = " - Waiting... - ";
             }else if(timer2.time() > 0.8){
-                waiting = " - Waiting.. - ";
+                waiting = " - Waiting..  - ";
             }else if(timer2.time() > 0.4){
-                waiting = " - Waiting. - ";
+                waiting = " - Waiting.   - ";
             }
             //Random string
             if(timer.time() > 8){
@@ -67,10 +68,10 @@ public class RunAuto extends LinearOpMode {
                 timer.reset();
             }
             //Update screen
-            telemetry.addLine("Auto choice :\n< " + selector.getChoice() +  " >" + status);
+            telemetry.addLine("Auto choice :\n< " + selector.getChoice() +  " > " + status);
             telemetry.addLine("---------------------------------------------------------");
             telemetry.addLine(waiting);
-            telemetry.addLine(waitingText[index]);
+            telemetry.addLine("\n" + waitingText[index]);
             telemetry.update();
         }
         //Running text
@@ -99,7 +100,7 @@ public class RunAuto extends LinearOpMode {
 
             case "Right Side":
                 //Setup and run the auto
-                initialPose = new Pose2d(-24, 62, Math.toRadians(135)); //-64, 60, Math.toRadians(90)
+                initialPose = new Pose2d(-24, 62, Math.toRadians(135)); //-64, 60, Math.toRadians(90) //-24, 62, Math.toRadians(135)
                 drive = new PinpointDrive(hardwareMap, initialPose);
                 trajectoryR = new RightAutoTrajectories(drive, initialPose, dev);
                 break;

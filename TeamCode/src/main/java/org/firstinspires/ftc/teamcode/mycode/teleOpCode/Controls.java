@@ -96,21 +96,21 @@ public class Controls {
                 Actions.runBlocking(claw.setPos(pos.grabAbove));
             }
             if (gamepad1.x) {
-                Actions.runBlocking(arm.setPos(pos.grabMiddle));
-                Actions.runBlocking(claw.setPos(pos.grabMiddle));
+                Actions.runBlocking(arm.setPos(pos.grabAboveLow));
+                Actions.runBlocking(claw.setPos(pos.grabAboveLow));
             }
             if (gamepad1.a) {
                 Actions.runBlocking(arm.setPos(pos.grabLow));
                 Actions.runBlocking(claw.setPos(pos.grabLow));
             }
             //High Rung
-            if (gamepad1.guide) {
-                Actions.runBlocking(arm.setPos(pos.highRungPrep));
-                Actions.runBlocking(claw.setPos(pos.highRungPrep));
-            }
             if (gamepad1.y){
                 Actions.runBlocking(arm.setPos(pos.highRung));
                 Actions.runBlocking(claw.setPos(pos.highRung));
+            }
+            if (gamepad1.guide) {
+                Actions.runBlocking(arm.setPos(pos.highRungPrep));
+                Actions.runBlocking(claw.setPos(pos.highRungPrep));
             }
             if (gamepad1.start){
                 Actions.runBlocking(arm.setPos(pos.highRung90D));
@@ -125,6 +125,10 @@ public class Controls {
             if (gamepad1.a) {
                 Actions.runBlocking(arm.setPos(pos.grabLow));
                 Actions.runBlocking(claw.setPos(pos.grabLow));
+            }
+            if (gamepad1.x) {
+                Actions.runBlocking(arm.setPos(pos.grabAboveLow));
+                Actions.runBlocking(claw.setPos(pos.grabAboveLow));
             }
             if (gamepad1.y) {
                 Actions.runBlocking(arm.setPos(pos.lowBasket));
