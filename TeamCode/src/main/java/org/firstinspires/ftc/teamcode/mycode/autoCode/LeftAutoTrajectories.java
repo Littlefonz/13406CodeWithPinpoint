@@ -8,7 +8,7 @@ import com.acmerobotics.roadrunner.TranslationalVelConstraint;
 import com.acmerobotics.roadrunner.Vector2d;
 import com.acmerobotics.roadrunner.ftc.Actions;
 
-import org.firstinspires.ftc.teamcode.PinpointDrive;
+import roadrunner.PinpointDrive;
 import org.firstinspires.ftc.teamcode.mycode.robotSetup.Arm;
 import org.firstinspires.ftc.teamcode.mycode.robotSetup.Claw;
 import org.firstinspires.ftc.teamcode.mycode.robotSetup.Devices;
@@ -67,21 +67,21 @@ public class LeftAutoTrajectories {
                         new ProfileAccelConstraint(-75.0, 50.0));
 
         leftTransitionToYellow = drive.actionBuilder(leftHangPos)
-                .afterTime(.55, claw.intakeSpeed(-1))
+                .afterTime(.55, claw.setProngs(-1))
                 .afterTime(1, claw.setPos(.65, .15))
                 .afterTime(1, arm.setPos(1200, 650))
-                .afterTime(1, claw.intakeSpeed(0))
+                .afterTime(1, claw.setProngs(0))
                 .setTangent(Math.toRadians(90))
                 .splineToConstantHeading(firstHangTransition, Math.toRadians(180),
                         new TranslationalVelConstraint(45.0));
 
         leftToFirstYellow = drive.actionBuilder(new Pose2d(52, 66, Math.toRadians(180)))
-                .stopAndAdd(claw.intakeSpeed(-1))
-                .afterTime(1, claw.intakeSpeed(0))
+                .stopAndAdd(claw.setProngs(-1))
+                .afterTime(1, claw.setProngs(0))
                 .afterTime(1, claw.setPos(.65, .15))
                 .afterTime(1, arm.setPos(1200, 650))
                 .afterTime(3.25, arm.setPos(1250, 200))
-                .afterTime(3.25, claw.intakeSpeed(1))
+                .afterTime(3.25, claw.setProngs(1))
                 .waitSeconds(.5)
                 .setTangent(Math.toRadians(-180))
                 .splineToLinearHeading(firstSampleA, Math.toRadians(-45),
@@ -90,7 +90,7 @@ public class LeftAutoTrajectories {
 
         leftToFirstYellow2 = drive.actionBuilder(new Pose2d(30, 50, Math.toRadians(90)))
                 .afterTime(3.25, arm.setPos(1250, 200))
-                .afterTime(3.25, claw.intakeSpeed(1))
+                .afterTime(3.25, claw.setProngs(1))
                 .waitSeconds(.5)
                 .setTangent(Math.toRadians(-180))
                 .splineToLinearHeading(firstSampleA, Math.toRadians(-45),
@@ -98,31 +98,31 @@ public class LeftAutoTrajectories {
                 .waitSeconds(.3);
 
         leftToSecondYellow = drive.actionBuilder(basket)
-                .stopAndAdd(claw.intakeSpeed(-1))
-                .afterTime(1, claw.intakeSpeed(0))
+                .stopAndAdd(claw.setProngs(-1))
+                .afterTime(1, claw.setProngs(0))
                 .afterTime(1, claw.setPos(.65, .15))
                 .afterTime(1, arm.setPos(1200, 650))
                 .afterTime(3, arm.setPos(1250, 200))
-                .afterTime(3, claw.intakeSpeed(1))
+                .afterTime(3, claw.setProngs(1))
                 .waitSeconds(.5)
                 .splineToLinearHeading(secondSampleA, 0,
                         new TranslationalVelConstraint(20.0))
                 .waitSeconds(.3);
 
         leftToThirdYellow = drive.actionBuilder(basket)
-                .stopAndAdd(claw.intakeSpeed(-1))
-                .afterTime(1, claw.intakeSpeed(0))
+                .stopAndAdd(claw.setProngs(-1))
+                .afterTime(1, claw.setProngs(0))
                 .afterTime(1, claw.setPos(.65, .15))
                 .afterTime(1, arm.setPos(1200, 650))
                 .afterTime(3, arm.setPos(1250, 100))
-                .afterTime(3.3, claw.intakeSpeed(1))
+                .afterTime(3.3, claw.setProngs(1))
                 .waitSeconds(.5)
                 .splineToLinearHeading(thirdSampleA, 0,
                         new TranslationalVelConstraint(20.0))
                 .waitSeconds(.4);
 
         leftToBasket = drive.actionBuilder(secondSampleA)
-                .stopAndAdd(claw.intakeSpeed(0))
+                .stopAndAdd(claw.setProngs(0))
                 .stopAndAdd(arm.setPos(2200, 3000))
                 .afterTime(.4, claw.setPos(.3, 0))
                 .setTangent(Math.toRadians(100))
@@ -130,8 +130,8 @@ public class LeftAutoTrajectories {
                         new TranslationalVelConstraint(20.0));
 
         parkInMiddle = drive.actionBuilder(basket)
-                .stopAndAdd(claw.intakeSpeed(-1))
-                .afterTime(.6, claw.intakeSpeed(0))
+                .stopAndAdd(claw.setProngs(-1))
+                .afterTime(.6, claw.setProngs(0))
                 .afterTime(1, claw.setPos(.95, .48))
                 .afterTime(1, arm.setPos(0, 1400))
                 .afterTime(3.6, arm.setPos(0, 2000))

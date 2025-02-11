@@ -1,6 +1,5 @@
 package org.firstinspires.ftc.teamcode.mycode.autoCode;
 
-import com.acmerobotics.roadrunner.AccelConstraint;
 import com.acmerobotics.roadrunner.Pose2d;
 import com.acmerobotics.roadrunner.ProfileAccelConstraint;
 import com.acmerobotics.roadrunner.SequentialAction;
@@ -10,11 +9,12 @@ import com.acmerobotics.roadrunner.TranslationalVelConstraint;
 import com.acmerobotics.roadrunner.Vector2d;
 import com.acmerobotics.roadrunner.ftc.Actions;
 
-import org.firstinspires.ftc.teamcode.PinpointDrive;
+import roadrunner.PinpointDrive;
 import org.firstinspires.ftc.teamcode.mycode.robotSetup.Arm;
 import org.firstinspires.ftc.teamcode.mycode.robotSetup.Claw;
 import org.firstinspires.ftc.teamcode.mycode.robotSetup.Devices;
 import org.firstinspires.ftc.teamcode.mycode.robotSetup.Positions;
+import org.firstinspires.ftc.teamcode.mycode.robotSetup.Prongs;
 
 public class RightAutoTrajectories {
     //Variables
@@ -24,6 +24,7 @@ public class RightAutoTrajectories {
     Arm arm;
     Claw claw;
     Positions pos;
+    Prongs prongs;
 
     /** Positions on right side **/
 
@@ -55,7 +56,7 @@ public class RightAutoTrajectories {
     //Hang #1
     Pose2d firstHangPos = new Pose2d(-8, 36, Math.toRadians(90));
     //Hang #2
-    Pose2d secondHangPos = new Pose2d(-4, 37.5, Math.toRadians(90));
+    Pose2d secondHangPos = new Pose2d(-4, 35, Math.toRadians(90));
     //Hang #3
     Pose2d thirdHangPos = new Pose2d(0, 37.5, Math.toRadians(90));
     //Hang #4
@@ -114,15 +115,17 @@ public class RightAutoTrajectories {
         arm = new Arm(dev);
         claw = new Claw(dev);
         pos = new Positions();
+        prongs = new Prongs(dev);
 
         /** Starting + prep positions **/
 
         rightStartToHangSpecimen = drive.actionBuilder(initialPose)
                 //.afterTime(0.25, claw.setPos(.65, .3))
-                //.afterTime(0.25, arm.setPos(0, 2200))//750, 2300
-                //.afterTime(.5, claw.setPos(.28, .3))
+                .afterTime(0, arm.setPos(0, 1500))//750, 2300
+                .afterTime(0, claw.setPos(.3, .71))
+                .afterTime(1.25, arm.setArm(1750))
                 .setTangent(Math.toRadians(-45))
-                .splineToLinearHeading(firstHangPos, Math.toRadians(-90),
+                .splineToLinearHeading(secondHangPos, Math.toRadians(-90),
                         new TranslationalVelConstraint(75.0),
                         new ProfileAccelConstraint(-75.0, 75.0))
                 .waitSeconds(.25);
@@ -174,26 +177,26 @@ public class RightAutoTrajectories {
                 //Grabbing Specimen Code (same as rightToNextCycle)
                 .splineToLinearHeading(specimenPickupPrep, Math.toRadians(90),
                         new TranslationalVelConstraint(50))
-                .afterTime(0.1, claw.intakeSpeed(1))
-                .afterTime(.4, claw.intakeSpeed(0))
+                .afterTime(0.1, claw.setProngs(1))
+                .afterTime(.4, claw.setProngs(0))
                 .afterTime(.4, arm.setPos(0, 750))
                 .lineToYLinearHeading(64.75, Math.toRadians(-90),
                         new TranslationalVelConstraint(10.0));
 
         rightToNextCycle = drive.actionBuilder(secondHangPos)
-                .afterTime(.55, claw.intakeSpeed(-1))
+                .afterTime(.55, claw.setProngs(-1))
                 .afterTime(.55, arm.setPos(0, 1500))
                 .afterTime(1, claw.setPos(.65, .425))
                 .afterTime(1, arm.setPos(pos.grabMiddle))
-                .afterTime(1.25, claw.intakeSpeed(0))
+                .afterTime(1.25, claw.setProngs(0))
                 .afterTime(1.25, claw.setPos(pos.grabMiddle))
                 .setTangent(Math.toRadians(90))
                 //Grabbing Specimen Code (same as rightToStartCycling)
                 .splineToLinearHeading(new Pose2d(-31, 61, Math. toRadians(-90)), Math.toRadians(90),
                         new TranslationalVelConstraint(45.0))
                 .waitSeconds(.25)
-                .afterTime(0.2, claw.intakeSpeed(1))
-                .afterTime(.5, claw.intakeSpeed(0))
+                .afterTime(0.2, claw.setProngs(1))
+                .afterTime(.5, claw.setProngs(0))
                 .afterTime(.5, arm.setPos(0, 750))
                 .lineToYLinearHeading(64.75, Math.toRadians(-90),
                         new TranslationalVelConstraint(10.0),
@@ -202,7 +205,7 @@ public class RightAutoTrajectories {
         /** Hang positions **/
 
         rightToHangSpecimen = drive.actionBuilder(new Pose2d(-32, 63.75, Math. toRadians(-90)))
-                .stopAndAdd(claw.intakeSpeed(0))
+                .stopAndAdd(claw.setProngs(0))
                 .afterTime(.285, claw.setPos(.96, .6))
                 .afterTime(.285, arm.setPos(0, 1500))
                 .afterTime(2, arm.setPos(0, 2200))
@@ -212,7 +215,7 @@ public class RightAutoTrajectories {
                         new ProfileAccelConstraint(-75.0, 30.0));
 
         rightToHangSpecimen2 = drive.actionBuilder(new Pose2d(-32, 63.75, Math. toRadians(-90)))
-                .stopAndAdd(claw.intakeSpeed(0))
+                .stopAndAdd(claw.setProngs(0))
                 .afterTime(.285, claw.setPos(.96, .6))
                 .afterTime(.285, arm.setPos(0, 1500))
                 .afterTime(2, arm.setPos(0, 2200))
@@ -222,7 +225,7 @@ public class RightAutoTrajectories {
                         new ProfileAccelConstraint(-75.0, 30.0));
 
         rightToHangSpecimen3 = drive.actionBuilder(new Pose2d(-32, 63.75, Math. toRadians(-90)))
-                .stopAndAdd(claw.intakeSpeed(0))
+                .stopAndAdd(claw.setProngs(0))
                 .afterTime(.285, claw.setPos(.96, .6))
                 .afterTime(.285, arm.setPos(0, 1500))
                 .afterTime(2, arm.setPos(0, 2200))
@@ -232,7 +235,7 @@ public class RightAutoTrajectories {
                         new ProfileAccelConstraint(-75.0, 30.0));
 
         rightToHangSpecimen4 = drive.actionBuilder(new Pose2d(-32, 63.75, Math. toRadians(-90)))
-                .stopAndAdd(claw.intakeSpeed(0))
+                .stopAndAdd(claw.setProngs(0))
                 .afterTime(.285, claw.setPos(.96, .6))
                 .afterTime(.285, arm.setPos(0, 1500))
                 .afterTime(2, arm.setPos(0, 2200))
@@ -258,86 +261,156 @@ public class RightAutoTrajectories {
         //-----------------------------------------------------------------------------------//
         rightToSamplePushing = rightStartToHangSpecimen.endTrajectory().fresh()
 
+                .afterTime(.75, prongs.setPos(pos.open))
+                .afterTime(1.25, claw.setPos(.51, .11))
+                .afterTime(1.25, arm.setPos(0, 800, 1000))
+                .afterTime(1.7, arm.setPos(0, 650, 1000))
+                .afterTime(2, prongs.setPos(pos.closed))
+
                 /* - - - - - - - - - - - - - - - - - - - - - - */
+
                 .setTangent(Math.toRadians(-90))
                 .strafeToLinearHeading(firstSamplePushPos, Math.toRadians(45))
-                /* - - - - - - - - - - - - - - - - - - - - - - */
 
                 /* - - - - - - - - - - - - - - - - - - - - - - */
+
+                .afterTime(.9, claw.setProngs(pos.open))
+                .afterTime(1, arm.setPos(0, 800, 1000))
+
+                .afterTime(1.7, arm.setPos(0, 650, 1000))
+                .afterTime(2, prongs.setPos(pos.closed))
+
+                /* - - - - - - - - - - - - - - - - - - - - - - */
+
                 .setTangent(Math.toRadians(90))
                 .splineToSplineHeading(firstSamplePushEnd, Math.toRadians(0),
-                        new TranslationalVelConstraint(10))
+                        new TranslationalVelConstraint(20))
                 .splineToLinearHeading(secondSamplePushPos, Math.toRadians(-90),
                         new TranslationalVelConstraint(20))
-                /* - - - - - - - - - - - - - - - - - - - - - - */
 
                 /* - - - - - - - - - - - - - - - - - - - - - - */
+
+                .afterTime(.9, claw.setProngs(pos.open))
+                .afterTime(1, arm.setPos(0, 800, 1000))
+
+                .afterTime(1.7, arm.setPos(0, 650, 1000))
+                .afterTime(2, prongs.setPos(pos.closed))
+
+                /* - - - - - - - - - - - - - - - - - - - - - - */
+
                 .setTangent(Math.toRadians(90))
                 .splineToSplineHeading(secondSamplePushEnd, Math.toRadians(90),
-                        new TranslationalVelConstraint(10))
+                        new TranslationalVelConstraint(20))
                 .splineToLinearHeading(thirdSamplePushPos, Math.toRadians(-90),
                         new TranslationalVelConstraint(20))
-                /* - - - - - - - - - - - - - - - - - - - - - - */
 
                 /* - - - - - - - - - - - - - - - - - - - - - - */
+
+                .afterTime(.9, claw.setProngs(pos.open))
+                .afterTime(1, arm.setPos(0, 800, 1000))
+
+                .afterTime(1.75, claw.setProngs(pos.closed))
+                .afterTime(2, arm.setArm(950))
+
+                /* - - - - - - - - - - - - - - - - - - - - - - */
+
                 .setTangent(Math.toRadians(90))
                 .splineToSplineHeading(thirdSamplePushEnd, Math.toRadians(90),
-                        new TranslationalVelConstraint(10));
+                        new TranslationalVelConstraint(20));
+
                 /* - - - - - - - - - - - - - - - - - - - - - - */
 
         rightToNewHang1 = rightToSamplePushing.endTrajectory().fresh()
 
+                .afterTime(0, arm.setArm(pos.highRung[0][0]))
+                .afterTime(0, claw.setPos(pos.highRung))
+
                 /* - - - - - - - - - - - - - - - - - - - - - - */
+
                 .setTangent(Math.toRadians(-90))
                 .splineToLinearHeading(latchPosCheckpoint, Math.toRadians(0),
                         new TranslationalVelConstraint(45))
+
+                /* - - - - - - - - - - - - - - - - - - - - - - */
+
+                .afterTime(0, arm.setSlides(1000))
+
+                /* - - - - - - - - - - - - - - - - - - - - - - */
+
                 .splineToSplineHeading(latchPos1, Math.toRadians(90),
                         new TranslationalVelConstraint(30));
-                /* - - - - - - - - - - - - - - - - - - - - - - */
-
-        rightToNewHang2 = rightToNewSpecimen.endTrajectory().fresh()
 
                 /* - - - - - - - - - - - - - - - - - - - - - - */
-                .setTangent(Math.toRadians(-90))
-                .splineToLinearHeading(latchPosCheckpoint, Math.toRadians(0),
-                        new TranslationalVelConstraint(30))
-                .splineToSplineHeading(latchPos2, Math.toRadians(90));
+
+//        rightToNewHang2 = rightToNewSpecimen.endTrajectory().fresh()
+//
+//                .afterTime(0, arm.setPos(pos.highRung))
+//                .afterTime(0, claw.setPos(pos.highRung))
+//
+//                /* - - - - - - - - - - - - - - - - - - - - - - */
+//
+//                .setTangent(Math.toRadians(-90))
+//                .splineToLinearHeading(latchPosCheckpoint, Math.toRadians(0),
+//                        new TranslationalVelConstraint(30))
+//                .splineToSplineHeading(latchPos2, Math.toRadians(90));
+//
+//                /* - - - - - - - - - - - - - - - - - - - - - - */
+//
+//        rightToNewHang3 = rightToNewSpecimen.endTrajectory().fresh()
+//
+//                .afterTime(0, arm.setPos(pos.highRung))
+//                .afterTime(0, claw.setPos(pos.highRung))
+//
+//                /* - - - - - - - - - - - - - - - - - - - - - - */
+//
+//                .setTangent(Math.toRadians(0))
+//                .splineToLinearHeading(latchPosCheckpoint, Math.toRadians(0),
+//                        new TranslationalVelConstraint(30))
+//                .splineToSplineHeading(latchPos3, Math.toRadians(90));
+//
+//                /* - - - - - - - - - - - - - - - - - - - - - - */
+//
+//        rightToNewHang4 = rightToNewSpecimen.endTrajectory().fresh()
+//
+//                .afterTime(0, arm.setPos(pos.highRung))
+//                .afterTime(0, claw.setPos(pos.highRung))
+//
+//                /* - - - - - - - - - - - - - - - - - - - - - - */
+//
+//                .setTangent(Math.toRadians(0))
+//                .splineToLinearHeading(latchPosCheckpoint, Math.toRadians(0),
+//                        new TranslationalVelConstraint(30))
+//                .splineToSplineHeading(latchPos4, Math.toRadians(90));
+//
+//                /* - - - - - - - - - - - - - - - - - - - - - - */
+
+        rightToNewSpecimen = rightToNewHang1.endTrajectory().fresh()
+
+                .afterTime(0, prongs.setPos(pos.open))
+                .afterTime(.25, arm.setSlides(0))
+                .afterTime(1, arm.setSlides(1000))
+
                 /* - - - - - - - - - - - - - - - - - - - - - - */
 
-        rightToNewHang3 = rightToNewSpecimen.endTrajectory().fresh()
-
-                /* - - - - - - - - - - - - - - - - - - - - - - */
-                .setTangent(Math.toRadians(0))
-                .splineToLinearHeading(latchPosCheckpoint, Math.toRadians(0),
-                        new TranslationalVelConstraint(30))
-                .splineToSplineHeading(latchPos3, Math.toRadians(90));
-                /* - - - - - - - - - - - - - - - - - - - - - - */
-
-        rightToNewHang4 = rightToNewSpecimen.endTrajectory().fresh()
-
-                /* - - - - - - - - - - - - - - - - - - - - - - */
-                .setTangent(Math.toRadians(0))
-                .splineToLinearHeading(latchPosCheckpoint, Math.toRadians(0),
-                        new TranslationalVelConstraint(30))
-                .splineToSplineHeading(latchPos4, Math.toRadians(90));
-                /* - - - - - - - - - - - - - - - - - - - - - - */
-
-        rightToNewSpecimen = rightToNewHang3.endTrajectory().fresh()
-
-                /* - - - - - - - - - - - - - - - - - - - - - - */
                 .setTangent(Math.toRadians(90))
                 .splineToSplineHeading(getSpecimenCheckpoint, Math.toRadians(180),
                         new TranslationalVelConstraint(30))
                 .strafeToSplineHeading(specimenPos, Math.toRadians(-90));
-                /* - - - - - - - - - - - - - - - - - - - - - - */
-
-        rightToPark = rightToNewHang4.endTrajectory().fresh()
 
                 /* - - - - - - - - - - - - - - - - - - - - - - */
+
+        rightToPark = rightToNewHang1.endTrajectory().fresh()
+
+                .afterTime(0, prongs.setPos(pos.open))
+                .afterTime(.25, arm.setPos(pos.idle))
+
+                /* - - - - - - - - - - - - - - - - - - - - - - */
+
                 .setTangent(Math.toRadians(90))
                 .strafeTo(parkPos,
                         new TranslationalVelConstraint(75),
                         new ProfileAccelConstraint(-75.0, 75.0));
+
                 /* - - - - - - - - - - - - - - - - - - - - - - */
     }
     public void runTrajectory(){
@@ -345,17 +418,17 @@ public class RightAutoTrajectories {
                 new SequentialAction(
                         rightStartToHangSpecimen.build(),
                         rightToSamplePushing.build(),
-                        new SleepAction(.75),
+                        new SleepAction(.25),
                         rightToNewHang1.build(),
                         rightToNewSpecimen.build(),
                         new SleepAction(.5),
-                        rightToNewHang2.build(),
+                        rightToNewHang1.build(),
                         rightToNewSpecimen.build(),
                         new SleepAction(.5),
-                        rightToNewHang3.build(),
+                        rightToNewHang1.build(),
                         rightToNewSpecimen.build(),
                         new SleepAction(.5),
-                        rightToNewHang4.build(),
+                        rightToNewHang1.build(),
                         rightToPark.build()
                 )
         );

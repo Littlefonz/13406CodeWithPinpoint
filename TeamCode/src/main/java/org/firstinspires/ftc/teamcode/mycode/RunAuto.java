@@ -11,7 +11,7 @@ import org.firstinspires.ftc.teamcode.mycode.robotSetup.Devices;
 import org.firstinspires.ftc.teamcode.mycode.autoCode.*;
 import java.util.Random;
 
-import org.firstinspires.ftc.teamcode.PinpointDrive;
+import roadrunner.PinpointDrive;
 
 @Autonomous(name="We'll be Gamin'", group="Autonomous", preselectTeleOp="We're Gaming")
 public class RunAuto extends LinearOpMode {
@@ -25,7 +25,7 @@ public class RunAuto extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {
         dev = new Devices(hardwareMap);
-        ListSelector selector = new ListSelector(gamepad1, new String[]{"Left Side", "Right Side"});
+        ListSelector selector = new ListSelector(new String[]{"Left Side", "Right Side"});
         Random rand = new Random();
         ElapsedTime timer = new ElapsedTime();
         ElapsedTime timer2 = new ElapsedTime();
@@ -39,7 +39,12 @@ public class RunAuto extends LinearOpMode {
 
         int index = rand.nextInt(waitingText.length);
         boolean locked = false;
+        boolean onlyWheels = true;
         String status = "(Unlocked)";
+
+        dev.clawWrist.setPosition(.85);
+        dev.prong1.setPosition(.49);
+        dev.prong2.setPosition(.49);
 
         while(!isStarted()){
             //Auto choice
@@ -49,7 +54,7 @@ public class RunAuto extends LinearOpMode {
                 loadTrajectory(selector.getChoice());
             }
             if (gamepad1.left_bumper || gamepad1.right_bumper && !locked){
-                selector.inputs(gamepad1.left_bumper, gamepad1.right_bumper);
+                selector.run(gamepad1.left_bumper, gamepad1.right_bumper);
             }
             //Waiting string
             String waiting = " - Waiting    - ";
@@ -74,8 +79,11 @@ public class RunAuto extends LinearOpMode {
             telemetry.addLine("\n" + waitingText[index]);
             telemetry.update();
         }
+        //Clear the list
+        //selector.clearAllLists();
+
         //Running text
-        telemetry.addLine("4 specimen auto in progress...");
+        telemetry.addLine("5 specimen auto in progress...");
         telemetry.update();
 
         switch (selector.getChoice()) {

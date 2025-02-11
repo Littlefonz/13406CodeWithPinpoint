@@ -2,7 +2,6 @@ package org.firstinspires.ftc.teamcode.mycode.robotSetup;
 
 //Imports
 import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
-import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
@@ -28,20 +27,23 @@ public class Devices{
     public DcMotorEx goRail;
     public DcMotorEx armAngle;
 
-    public CRServo intake1;
-    public CRServo intake2;
+    public Servo prong1;
+    public Servo prong2;
     public Servo clawRotation;
     public Servo clawWrist;
+
+    public DcMotorEx slides;
 
     public Devices(HardwareMap hardwareMap) {
         this.hardwareMap = hardwareMap;
         //Arm & Claw
         goRail = hardwareMap.get(DcMotorEx.class, "goRail");
         armAngle = hardwareMap.get(DcMotorEx.class, "armAngle");
-        intake1 = hardwareMap.get(CRServo.class, "intake1");
-        intake2 = hardwareMap.get(CRServo.class, "intake2");
+        prong1 = hardwareMap.get(Servo.class, "intake1");
+        prong2 = hardwareMap.get(Servo.class, "intake2");
         clawRotation = hardwareMap.get(Servo.class, "clawRotation");
         clawWrist = hardwareMap.get(Servo.class, "clawWrist");
+        slides = hardwareMap.get(DcMotorEx.class, "slides");
         //Drive-Train (FOD)
         LFDrive = hardwareMap.get(DcMotorEx.class, "leftFront");
         LBDrive = hardwareMap.get(DcMotorEx.class, "leftBack");
@@ -69,29 +71,36 @@ public class Devices{
         //Set device directions-
         LFDrive.setDirection(DcMotorSimple.Direction.REVERSE);
         LBDrive.setDirection(DcMotorSimple.Direction.REVERSE);
-        intake2.setDirection(CRServo.Direction.REVERSE);
-        intake1.setDirection(CRServo.Direction.FORWARD);
         //Set motor break behavior
         LFDrive.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
         LBDrive.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
         RFDrive.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
         RBDrive.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
-        //Set device mode
-        goRail.setTargetPosition(0);
-        armAngle.setTargetPosition(0);
-        goRail.setMode(DcMotorEx.RunMode.RUN_TO_POSITION);
-        armAngle.setMode(DcMotorEx.RunMode.RUN_TO_POSITION);
-        armAngle.setDirection(DcMotorSimple.Direction.REVERSE);
-        //Set scale ranges for servos
-        //clawWrist.scaleRange(0, 1);
-        //clawRotation.scaleRange(0, 1);
 
-        //Preset Positions
+        // GoRail
+        goRail.setTargetPosition(0);
+        goRail.setMode(DcMotorEx.RunMode.RUN_TO_POSITION);
+        goRail.setVelocity(10000); // Was: 5000
+
+        // Arm angle
+        armAngle.setDirection(DcMotorSimple.Direction.REVERSE);
+        armAngle.setTargetPosition(0);
+        armAngle.setMode(DcMotorEx.RunMode.RUN_TO_POSITION);
+        armAngle.setVelocity(10000); // Was: 2500
+
+        // Slides
+        slides.setTargetPosition(0);
+        slides.setMode(DcMotorEx.RunMode.RUN_TO_POSITION);
+        slides.setVelocity(500); // increase this value?
+
+        // Prongs
+        prong1.setPosition(.49);
+        prong2.setPosition(.49);
+        prong2.setDirection(Servo.Direction.REVERSE);
+        prong1.setDirection(Servo.Direction.FORWARD);
+
+        // Claw
         clawWrist.setPosition(1);
         clawRotation.setPosition(.65);
-
-        //Preset Velocities
-        armAngle.setVelocity(2500);
-        goRail.setVelocity(5000);
     }
 }

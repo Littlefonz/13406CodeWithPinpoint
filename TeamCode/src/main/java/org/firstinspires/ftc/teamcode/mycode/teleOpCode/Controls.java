@@ -4,6 +4,7 @@ package org.firstinspires.ftc.teamcode.mycode.teleOpCode;
 import com.acmerobotics.roadrunner.ftc.Actions;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.Gamepad;
+import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.teamcode.mycode.robotSetup.Arm;
 import org.firstinspires.ftc.teamcode.mycode.robotSetup.Claw;
@@ -22,6 +23,11 @@ public class Controls {
     public FOD fod;
     public ListSelector selector;
 
+    ElapsedTime timer = new ElapsedTime();
+
+    //Gamepad values
+    boolean x = false;
+
     //Set the constructor (sets these values whenever the class is first called)
     public Controls(Gamepad gamepad1, Gamepad gamepad2, Devices dev) {
         this.gamepad1 = gamepad1;
@@ -32,18 +38,16 @@ public class Controls {
         fod = new FOD(dev);
         arm = new Arm(dev);
         claw = new Claw(dev);
-        selector = new ListSelector(gamepad1, new String[]{"Specimen", "Sample", "Hang"});
+        selector = new ListSelector(new String[]{"Specimen", "Sample", "Hang"});
     }
 
     //Runs controller 1 code (start + a)
-    public void controller1() {
+    public void controller1() throws InterruptedException {
         //Intake/Outtake
         if (gamepad1.left_trigger > pos.gamepadThreshold) {
-            Actions.runBlocking(claw.intakeSpeed(pos.maxPower));
+            Actions.runBlocking(claw.setProngs(pos.open));
         } else if (gamepad1.right_trigger > pos.gamepadThreshold) {
-            Actions.runBlocking(claw.intakeSpeed(-pos.maxPower));
-        } else {
-            Actions.runBlocking(claw.intakeSpeed(pos.stopDevice));
+            Actions.runBlocking(claw.setProngs(pos.closed));
         }
 
         //Arm Controls
@@ -88,33 +92,42 @@ public class Controls {
         }
 
         //Arm + Claw Set Positions
-        selector.inputs(gamepad1.left_bumper, gamepad1.right_bumper);
+        selector.run(gamepad1.left_bumper, gamepad1.right_bumper);
         if (selector.getChoice().equals("Specimen")) {
             //Claw + Arm Controls
             if (gamepad1.b) {
                 Actions.runBlocking(arm.setPos(pos.grabAbove));
                 Actions.runBlocking(claw.setPos(pos.grabAbove));
+                Actions.runBlocking(claw.setProngs(pos.open));
             }
             if (gamepad1.x) {
-                Actions.runBlocking(arm.setPos(pos.grabAboveLow));
-                Actions.runBlocking(claw.setPos(pos.grabAboveLow));
+                if (timer.time() > 1){
+                    timer.reset();
+                }
+                else if (timer.time() > .45){
+                    Actions.runBlocking(arm.setArm(pos.grabAbove[0][0]));
+                }
+                else if(timer.time() > .3){
+                    Actions.runBlocking(claw.setProngs(pos.closed));
+                }
+                else if (timer.time() > 0){
+                    Actions.runBlocking(arm.setArm(pos.grabAboveLow[0][0], 1250));
+                }
             }
             if (gamepad1.a) {
-                Actions.runBlocking(arm.setPos(pos.grabLow));
-                Actions.runBlocking(claw.setPos(pos.grabLow));
+                Actions.runBlocking(arm.setPos(pos.grabMiddle));
+                Actions.runBlocking(claw.setPos(pos.grabMiddle));
             }
             //High Rung
             if (gamepad1.y){
                 Actions.runBlocking(arm.setPos(pos.highRung));
                 Actions.runBlocking(claw.setPos(pos.highRung));
             }
-            if (gamepad1.guide) {
-                Actions.runBlocking(arm.setPos(pos.highRungPrep));
-                Actions.runBlocking(claw.setPos(pos.highRungPrep));
+            if (gamepad1.back) {
+                Actions.runBlocking(arm.setSlides(pos.slidesIn));
             }
             if (gamepad1.start){
-                Actions.runBlocking(arm.setPos(pos.highRung90D));
-                Actions.runBlocking(claw.setPos(pos.highRung90D));
+                Actions.runBlocking(arm.setSlides(pos.slidesOut));
             }
         } else if (selector.getChoice().equals("Sample")) {
             //Claw + Arm Controls
@@ -128,7 +141,6 @@ public class Controls {
             }
             if (gamepad1.x) {
                 Actions.runBlocking(arm.setPos(pos.grabAboveLow));
-                Actions.runBlocking(claw.setPos(pos.grabAboveLow));
             }
             if (gamepad1.y) {
                 Actions.runBlocking(arm.setPos(pos.lowBasket));
