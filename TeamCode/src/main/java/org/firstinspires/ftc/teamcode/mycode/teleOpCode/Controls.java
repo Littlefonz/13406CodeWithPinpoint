@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode.mycode.teleOpCode;
 
 //Imports
 import com.acmerobotics.roadrunner.ftc.Actions;
+import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.util.ElapsedTime;
@@ -59,13 +60,13 @@ public class Controls {
             dev.armAngle.setMode(DcMotorEx.RunMode.RUN_TO_POSITION);
         }
 
-        //GoRail Controls
+        //Slide Controls
         if (gamepad1.dpad_left) {
-            arm.adjust(dev.goRail, pos.maxVelocity);
+            arm.adjust(dev.slides, pos.maxVelocity);
         } else if (gamepad1.dpad_right) {
-            arm.adjust(dev.goRail, -pos.maxVelocity);
+            arm.adjust(dev.slides, -pos.maxVelocity);
         } else {
-            dev.goRail.setMode(DcMotorEx.RunMode.RUN_TO_POSITION);
+            dev.slides.setMode(DcMotorEx.RunMode.RUN_TO_POSITION);
         }
 
         //Claw Rotation Controls
@@ -82,13 +83,9 @@ public class Controls {
             claw.adjust(dev.clawWrist, -pos.clawAdjustment);
         }
 
-        //Center chamber grabbing
+        //Reset slides
         if (gamepad1.back){
-            Actions.runBlocking(arm.setPos(pos.grabAboveLow));
-        }
-        if(gamepad1.right_stick_button){
-            Actions.runBlocking(arm.setPos(pos.grabLow2));
-            Actions.runBlocking(claw.setPos(pos.grabLow2));
+            dev.slides.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         }
 
         //Arm + Claw Set Positions
@@ -101,22 +98,27 @@ public class Controls {
                 Actions.runBlocking(claw.setProngs(pos.open));
             }
             if (gamepad1.x) {
-                if (timer.time() > 1){
+                if (timer.time() > 1.25){
                     timer.reset();
                 }
-                else if (timer.time() > .45){
-                    Actions.runBlocking(arm.setArm(pos.grabAbove[0][0]));
+                else if (timer.time() > .7){
+                    Actions.runBlocking(arm.setArm(pos.grabAbove[0][1]));
                 }
-                else if(timer.time() > .3){
+                else if(timer.time() > .6){
                     Actions.runBlocking(claw.setProngs(pos.closed));
                 }
                 else if (timer.time() > 0){
-                    Actions.runBlocking(arm.setArm(pos.grabAboveLow[0][0], 1250));
+                    Actions.runBlocking(arm.setArm(pos.grabAboveLow[0][1], 1250));
                 }
             }
             if (gamepad1.a) {
-                Actions.runBlocking(arm.setPos(pos.grabMiddle));
                 Actions.runBlocking(claw.setPos(pos.grabMiddle));
+                Actions.runBlocking(arm.setSlides(pos.grabMiddle[0][0]));
+                if(timer.time() > .75){
+                    timer.reset();
+                }else if (timer.time() > .15){
+                    Actions.runBlocking(arm.setArm(pos.grabMiddle[0][1], 1000));
+                }
             }
             //High Rung
             if (gamepad1.y){
@@ -143,8 +145,17 @@ public class Controls {
                 Actions.runBlocking(arm.setPos(pos.grabAboveLow));
             }
             if (gamepad1.y) {
-                Actions.runBlocking(arm.setPos(pos.lowBasket));
-                Actions.runBlocking(claw.setPos(pos.lowBasket));
+                Actions.runBlocking(arm.setPos(pos.highBasket));
+                Actions.runBlocking(claw.setPos(pos.highBasket));
+            }
+            if (gamepad1.a) {
+                Actions.runBlocking(claw.setPos(pos.grabMiddle));
+                Actions.runBlocking(arm.setSlides(pos.grabMiddle[0][0]));
+                if(timer.time() > .75){
+                    timer.reset();
+                }else if (timer.time() > .15){
+                    Actions.runBlocking(arm.setArm(pos.grabMiddle[0][1], 1000));
+                }
             }
         } else if (selector.getChoice().equals("Hang")) {
             //Claw + Arm Controls

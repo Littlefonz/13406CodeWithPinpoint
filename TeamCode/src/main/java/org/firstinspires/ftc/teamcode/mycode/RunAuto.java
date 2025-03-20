@@ -101,14 +101,14 @@ public class RunAuto extends LinearOpMode {
         switch (trajectory) {
             case "Left Side":
                 //Setup and run the auto
-                initialPose = new Pose2d(40, 66, Math.toRadians(-180));
+                initialPose = new Pose2d(40, 66, Math.toRadians(0));
                 drive = new PinpointDrive(hardwareMap, initialPose);
                 trajectoryL = new LeftAutoTrajectories(drive, initialPose, dev);
                 break;
 
             case "Right Side":
                 //Setup and run the auto
-                initialPose = new Pose2d(-24, 62, Math.toRadians(135)); //-64, 60, Math.toRadians(90) //-24, 62, Math.toRadians(135)
+                initialPose = new Pose2d(-4, 64, Math.toRadians(90)); //-64, 60, Math.toRadians(90) //-24, 62, Math.toRadians(135)
                 drive = new PinpointDrive(hardwareMap, initialPose);
                 trajectoryR = new RightAutoTrajectories(drive, initialPose, dev);
                 break;

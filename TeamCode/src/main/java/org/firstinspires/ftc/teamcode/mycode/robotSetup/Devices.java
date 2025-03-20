@@ -24,7 +24,6 @@ public class Devices{
 
     public IMU imu;
 
-    public DcMotorEx goRail;
     public DcMotorEx armAngle;
 
     public Servo prong1;
@@ -37,7 +36,6 @@ public class Devices{
     public Devices(HardwareMap hardwareMap) {
         this.hardwareMap = hardwareMap;
         //Arm & Claw
-        goRail = hardwareMap.get(DcMotorEx.class, "goRail");
         armAngle = hardwareMap.get(DcMotorEx.class, "armAngle");
         prong1 = hardwareMap.get(Servo.class, "intake1");
         prong2 = hardwareMap.get(Servo.class, "intake2");
@@ -77,21 +75,17 @@ public class Devices{
         RFDrive.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
         RBDrive.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
 
-        // GoRail
-        goRail.setTargetPosition(0);
-        goRail.setMode(DcMotorEx.RunMode.RUN_TO_POSITION);
-        goRail.setVelocity(10000); // Was: 5000
-
         // Arm angle
         armAngle.setDirection(DcMotorSimple.Direction.REVERSE);
         armAngle.setTargetPosition(0);
         armAngle.setMode(DcMotorEx.RunMode.RUN_TO_POSITION);
-        armAngle.setVelocity(10000); // Was: 2500
+        armAngle.setPower(1); // Was: 2500
 
         // Slides
+        slides.setDirection(DcMotorSimple.Direction.REVERSE);
         slides.setTargetPosition(0);
         slides.setMode(DcMotorEx.RunMode.RUN_TO_POSITION);
-        slides.setVelocity(500); // increase this value?
+        slides.setPower(1); // increase this value?
 
         // Prongs
         prong1.setPosition(.49);

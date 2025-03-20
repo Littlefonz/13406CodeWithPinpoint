@@ -15,16 +15,12 @@ public class Arm {
     }
 
     //--------------------------------------------------------//
-    public Action setPos(double goRailExtenstion, double angle, double slidesExtenstion) {
-        return new setPos((int) goRailExtenstion, (int) angle, (int) slidesExtenstion);
-    }
-
     public Action setPos(double extenstion, double angle) {
-        return new setPos((int) extenstion, (int) angle, 0);
+        return new setPos((int) angle, (int) extenstion);
     }
 
     public Action setPos(double[][] pos) {
-        return new setPos((int) pos[0][1], (int) pos[0][0], (int) pos[0][2]);
+        return new setPos((int) pos[0][1], (int) pos[0][0]);
     }
 
     public Action setArm(double pos){
@@ -44,29 +40,27 @@ public class Arm {
     }
 
     public void adjust(DcMotorEx motor, int speed){
-        motor.setMode(DcMotor.RunMode.RUN_USING_ENCODER); motor.setVelocity(speed);
+        motor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        motor.setVelocity(speed);
+        motor.setTargetPosition(motor.getCurrentPosition());
     }
 
     //--------------------------------------------------------//
 
     public class setPos implements Action {
-        int goRailExtenstion;
         int slidesExtenstion;
         int angle;
 
-        public setPos(int goRailExtenstion, int angle, int slidesExtenstion) {
-            this.goRailExtenstion = goRailExtenstion;
+        public setPos(int angle, int slidesExtenstion) {
             this.slidesExtenstion = slidesExtenstion;
             this.angle = angle;
         }
 
         @Override
         public boolean run(@NonNull TelemetryPacket packet) {
-            dev.goRail.setVelocity(10000);
-            dev.goRail.setTargetPosition(goRailExtenstion);
-            dev.armAngle.setVelocity(10000);
+            dev.armAngle.setPower(1);
             dev.armAngle.setTargetPosition(angle);
-            dev.slides.setVelocity(10000);
+            dev.slides.setPower(1);
             dev.slides.setTargetPosition(slidesExtenstion);
             return false;
         }
@@ -91,16 +85,16 @@ public class Arm {
 
     public class setSlides implements Action {
         int angle;
-        int velocity;
+        double power;
 
-        public setSlides(int angle, int velocity) {
+        public setSlides(int angle, double power) {
             this.angle = angle;
-            this.velocity = velocity;
+            this.power = power;
         }
 
         @Override
         public boolean run(@NonNull TelemetryPacket packet) {
-            dev.slides.setVelocity(velocity);
+            dev.slides.setVelocity(power);
             dev.slides.setTargetPosition(angle);
             return false;
         }

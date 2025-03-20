@@ -45,22 +45,22 @@ public class ResetEncoders extends LinearOpMode {
 
             //GoRail Adjustments
             if (gamepad1.dpad_left) {
-                arm.adjust(dev.goRail, speed);
+                arm.adjust(dev.slides, speed);
             } else if (gamepad1.dpad_right) {
-                arm.adjust(dev.goRail, -speed);
+                arm.adjust(dev.slides, -speed);
             } else {
-                dev.goRail.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                dev.slides.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             }
 
             //Reset Encoders
             if (gamepad1.y){
                 dev.armAngle.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-                dev.goRail.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+                dev.slides.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
             }
 
             //Telemetry
             telemetry.addData("Arm rotation in TICKS:  ", dev.armAngle.getCurrentPosition());
-            telemetry.addData("GoRail extension in TICKS:  ", dev.goRail.getCurrentPosition());
+            telemetry.addData("Slides extension in TICKS:  ", dev.slides.getCurrentPosition());
 
             telemetry.addData("\nClaw Rotation Pos:  ", dev.clawRotation.getPosition());
             telemetry.addData("Claw Wrist Pos:  ", dev.clawWrist.getPosition());

@@ -4,28 +4,29 @@ public final class Positions {
 
     /**Positions**/
 
-    //Idle position                  //Angle //GoRail //Slides //Rotation //Wrist
-    public double[][] idle = {       {0,     0,       0},      {.65,      1}};
+    //Idle position                  //Slides //Angle //Rotation //Wrist
+    public double[][] idle = {       {50,     0},      {.65,      1}};
     //Rung positions
-    public double[][] lowRung = {    {600,   0,       0},      {.3,       .3}};
-    public double[][] highRung = {   {1630,  3928,    0},      {.29,      .55}};//{2475,  0},         {.96,      .4}
-    public double[][] highRung90D = {{2900,  0,       0},      {.65,      .075}};
-    public double[][] highRungPrep ={{2900,  0,       0},      {.65,      .3}};
+    public double[][] lowRung = {    {50,     350},    {.3,       .3}};
+    public double[][] highRung = {   {750,     1325},   {.29,      .59}};//{2475,  0},         {.96,      .4}
+    public double[][] highRung90D = {{50,     2750},   {.65,      .075}};
+    public double[][] highRungPrep ={{50,     2750},   {.65,      .3}};
     //Basket positions
-    public double[][] lowBasket = {  {2850,  0,       0},      {.3,       .17}};
-    public double[][] highBasket = { {3250,  3300,    1000},   {.3,       0}};
+    public double[][] lowBasket = {  {50,     3600},   {.3,       .17}};
+    public double[][] highBasket = { {2100,    3600},   {.92,       .75}};
     //Grab positions
-    public double[][] grabAbove= {   {850,   3900,    1000},   {.65,      .12}};
-    public double[][] grabAboveLow ={{625,   3900,    1000},   {.65,      .12}};
-    public double[][] grabLow2 = {   {600,   0,       1000},   {.92,      .48}};
-    public double[][] grabMiddle = { {420,   0,       0},      {.31,     .48}};
-    public double[][] grabLow = {    {0,     1600,    0},      {.92,      .48}};
+    public double[][] grabAbove= {   {2000,    875},    {.65,      .04}};
+    public double[][] grabAboveLow ={{2000,    675},    {.65,      .04}};
+    public double[][] grabLow2 = {   {2000,    450},    {.92,      .45}};
+    public double[][] grabMiddle = { {50,     250},    {.31,     .45}};
+    public double[][] grabLow = {    {250,     50},     {.92,      .4}};
     //Bot hang
-    public double[][] hangPrepPos = {{3800,  1900,    0},      {.65,      1}};
+    public double[][] hangPrepPos = {{750,    3800},      {.65,      1}};
 
     //Claw positions
     public double[] closed = {.49, .49};
     public double[] open = {.625, .625};
+    public double[] openXL = {.7, .7};
 
     //Slides positions
     public int slidesIn = 0;

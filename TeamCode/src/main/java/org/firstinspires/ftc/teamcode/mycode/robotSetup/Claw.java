@@ -35,6 +35,10 @@ public class Claw {
         return new setProngs(pos[0], pos[1]);
     }
 
+    public Action setProngs(double pos1, double pos2){
+        return new setProngs(pos1, pos2);
+    }
+
     public void adjust(Servo servo, double rotation){
         servo.setPosition(servo.getPosition() + rotation);
     }

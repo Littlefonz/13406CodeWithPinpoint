@@ -18,6 +18,9 @@ public class RunTeleOp extends LinearOpMode {
         Devices dev = new Devices(hardwareMap);
         Controls gpad = new Controls(gamepad1, gamepad2, dev);
 
+        //Constant slide power to keep slides in place
+        dev.slides.setPower(.01);
+
         //Run the TeleOp Loop
         while (opModeIsActive()){
             //Run inputs if the controller isn't at rest
@@ -28,7 +31,7 @@ public class RunTeleOp extends LinearOpMode {
             telemetry.addData("Mode: ", gpad.selector.getChoice());
 
             telemetry.addData("\nArm rotation in TICKS:  ", dev.armAngle.getCurrentPosition());
-            telemetry.addData("GoRail extension in TICKS:  ", dev.goRail.getCurrentPosition());
+            telemetry.addData("Slides extension in TICKS:  ", dev.slides.getCurrentPosition());
 
             telemetry.addData("\nClaw Rotation Pos:  ", dev.clawRotation.getPosition());
             telemetry.addData("Claw Wrist Pos:  ", dev.clawWrist.getPosition());
