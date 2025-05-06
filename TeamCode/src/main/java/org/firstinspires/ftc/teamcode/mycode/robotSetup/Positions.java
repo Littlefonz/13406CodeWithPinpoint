@@ -13,10 +13,10 @@ public final class Positions {
     public double[][] highRungPrep ={{50,     2750},   {.65,      .3}};
     //Basket positions
     public double[][] lowBasket = {  {50,     3600},   {.3,       .17}};
-    public double[][] highBasket = { {2100,    3600},   {.92,       .75}};
+    public double[][] highBasket = { {2100,    3600},   {.97,       .7}};
     //Grab positions
-    public double[][] grabAbove= {   {2000,    875},    {.65,      .04}};
-    public double[][] grabAboveLow ={{2000,    675},    {.65,      .04}};
+    public double[][] grabAbove= {   {2000,    875},    {.65,      .12}};
+    public double[][] grabAboveLow ={{2000,    685},    {.65,      .12}};
     public double[][] grabLow2 = {   {2000,    450},    {.92,      .45}};
     public double[][] grabMiddle = { {50,     250},    {.31,     .45}};
     public double[][] grabLow = {    {250,     50},     {.92,      .4}};

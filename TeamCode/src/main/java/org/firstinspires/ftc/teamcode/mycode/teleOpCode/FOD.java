@@ -5,20 +5,17 @@ import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.teamcode.mycode.robotSetup.Devices;
 
 public class FOD{
-    //Declare classes
+    //Declare Devices as an empty variable
     Devices dev;
-    //Identify other classes
+
+    //Create a constructor to setup devices
     public FOD(Devices dev) {
         this.dev = dev;
     }
-    //Variable
-    public double maxSpeed;
-    final public double slow = .25;
-    final public double normal = .625;
-    final public double fast = .85;
-
     //Resetting IMU
-    public void resetOrientation(){dev.imu.resetYaw();}
+    public void resetOrientation(){
+        dev.imu.resetYaw();
+    }
     //All of the Driving Components
     public void FODDrive(double y, double x, double rx, /*double ry,*/ double speed) {
         //Speed multiplier
@@ -29,7 +26,7 @@ public class FOD{
         //Gets the direction the robot is facing (yaw)
         double orientation = dev.imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.RADIANS);
 
-        //Flick Stick turning (but Saeid hates it D:)
+        //Flick stick turning (but Saeid hates it D:)
         //rx = FlickStickRXCalc(orientation, rx, ry);
 
         //Math to decide how the robot will move (with its current orientation)
@@ -49,8 +46,11 @@ public class FOD{
         dev.LBDrive.setPower(BLPower * speed);
         dev.RBDrive.setPower(BRPower * speed);
     }
+
+    //Variable for joystick orientation
     public double joystickOrientation;
-    
+
+    //Extenstion to fod to use have fixed turning (unfinished!)
     public double FlickStickRXCalc(double botOrientation, double joystickX, double joystickY){ // calc is short for calculator if you didn't know
         //Base turning power
         double turnPower = 0;

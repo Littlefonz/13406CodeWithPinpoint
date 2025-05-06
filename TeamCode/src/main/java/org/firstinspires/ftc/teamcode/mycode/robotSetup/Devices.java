@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode.mycode.robotSetup;
 
 //Imports
 import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
+import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
@@ -52,17 +53,17 @@ public class Devices{
         imu.initialize(
                 new IMU.Parameters(
                         new RevHubOrientationOnRobot(
-                                //RevHubOrientationOnRobot.LogoFacingDirection.RIGHT,
-                                //RevHubOrientationOnRobot.UsbFacingDirection.UP
-                                new Orientation(
-                                        AxesReference.INTRINSIC,
-                                        AxesOrder.XYZ,
-                                        AngleUnit.DEGREES,
-                                        0,
-                                        0,
-                                        255,
-                                        0  // acquisitionTime, not used
-                                )
+                                RevHubOrientationOnRobot.LogoFacingDirection.RIGHT,
+                                RevHubOrientationOnRobot.UsbFacingDirection.UP
+//                                new Orientation(
+//                                        AxesReference.INTRINSIC,
+//                                        AxesOrder.XYZ,
+//                                        AngleUnit.DEGREES,
+//                                        0,
+//                                        0,
+//                                        255,
+//                                        0  // acquisitionTime, not used
+                                //)
                         )
                 )
         );

@@ -1,36 +1,32 @@
 package org.firstinspires.ftc.teamcode.mycode;
 
-/* This file will be the main file of the program, running every other file to make the whole bot run.
- *
- * Specifically, this code will include:
- * - A path to every file/class
- * - Links every part of the bot, making every file run together at once
- */
-
 //Imports
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
-
 import org.firstinspires.ftc.teamcode.mycode.robotSetup.Arm;
 import org.firstinspires.ftc.teamcode.mycode.robotSetup.Devices;
 
+//Start of the TeleOp
 @TeleOp(name="Reset Encoders", group="Linear OpMode")
 public class ResetEncoders extends LinearOpMode {
     @Override public void runOpMode() throws InterruptedException {
-        //Import the other files/classes
+        //Import Devices
         Devices dev = new Devices(hardwareMap);
+
+        //Import the Arm class
         Arm arm = new Arm(dev);
-        //Start the Bot
+
+        //Wait for play to be pressed
         waitForStart();
 
         //Run the TeleOp Loop
         while (opModeIsActive()){
-            //Adjustment speed
+            //Adjustment speed values
             int speed = 10000;
-            if(gamepad1.left_trigger == 1){
+            if(gamepad1.left_trigger >= 0.5){
                 speed = 500;
-            }else if(gamepad1.right_trigger == 1){
+            }else if(gamepad1.right_trigger >= 0.5){
                 speed = 1000;
             }
 
@@ -43,7 +39,7 @@ public class ResetEncoders extends LinearOpMode {
                 dev.armAngle.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             }
 
-            //GoRail Adjustments
+            //Slides adjustments
             if (gamepad1.dpad_left) {
                 arm.adjust(dev.slides, speed);
             } else if (gamepad1.dpad_right) {
@@ -52,19 +48,15 @@ public class ResetEncoders extends LinearOpMode {
                 dev.slides.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             }
 
-            //Reset Encoders
+            //Reset encoders
             if (gamepad1.y){
                 dev.armAngle.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
                 dev.slides.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
             }
 
-            //Telemetry
+            //Update the screen with new telemetry
             telemetry.addData("Arm rotation in TICKS:  ", dev.armAngle.getCurrentPosition());
             telemetry.addData("Slides extension in TICKS:  ", dev.slides.getCurrentPosition());
-
-            telemetry.addData("\nClaw Rotation Pos:  ", dev.clawRotation.getPosition());
-            telemetry.addData("Claw Wrist Pos:  ", dev.clawWrist.getPosition());
-
             telemetry.update();
         }
     }

@@ -54,7 +54,7 @@ public class RightAutoTrajectories {
     //Hang #1
     Pose2d firstHangPos = new Pose2d(-8, 36.25, Math.toRadians(90));
     //Hang #2
-    Pose2d secondHangPos = new Pose2d(-4, 34, Math.toRadians(90));
+    Pose2d secondHangPos = new Pose2d(-4, 33.5, Math.toRadians(90));
     //Hang #3
     Pose2d thirdHangPos = new Pose2d(0, 37.5, Math.toRadians(90));
     //Hang #4
@@ -71,8 +71,8 @@ public class RightAutoTrajectories {
     Pose2d secondSamplePushEnd = new Pose2d(-56, 36, Math.toRadians(-90));
     Pose2d thirdSamplePushEnd = new Pose2d(-63, 59, Math.toRadians(-90));
 
-    Pose2d latchPos1 = new Pose2d(-2, 33, Math.toRadians(90));
-    Pose2d latchPos2 = new Pose2d(-2, 32.5, Math.toRadians(90));
+    Pose2d latchPos1 = new Pose2d(-2, 32.5, Math.toRadians(90));
+    Pose2d latchPos2 = new Pose2d(-2, 31.5, Math.toRadians(90));
     Pose2d latchPos3 = new Pose2d(0, 40, Math.toRadians(90));
     Pose2d latchPos4 = new Pose2d(4, 40, Math.toRadians(90));
 
@@ -122,7 +122,7 @@ public class RightAutoTrajectories {
 
         rightStartToHangSpecimen = drive.actionBuilder(initialPose)
                 .afterTime(0.25, claw.setPos(pos.highRung))
-                .afterTime(0, arm.setPos(750, 1375))//750, 2300
+                .afterTime(0, arm.setPos(1000, 1375))//750, 2300
                 .afterTime(0, claw.setPos(.3, .71))
                 .waitSeconds(.4)
                 .setTangent(Math.toRadians(-90))
@@ -138,7 +138,7 @@ public class RightAutoTrajectories {
                 .afterTime(10.0, claw.setProngs(pos.openXL))
                 .afterTime(10.0, arm.setPos(pos.grabMiddle))
                 .afterTime(10.0, claw.setPos(pos.grabMiddle))
-                .afterTime(11.25, claw.setProngs(pos.closed))
+                .afterTime(11.5, claw.setProngs(pos.closed))
                 .setTangent(Math.toRadians(90))
                 //Prep movement
                 .splineToConstantHeading(firstHangTransition, Math.toRadians(180),
@@ -290,7 +290,7 @@ public class RightAutoTrajectories {
                 .afterTime(6.5, claw.setProngs(pos.openXL))
                 .afterTime(7.0, arm.setPos(pos.grabMiddle))
                 .afterTime(7.0, claw.setPos(pos.grabMiddle))
-                .afterTime(9.0, claw.setProngs(pos.closed))
+                .afterTime(11.0, claw.setProngs(pos.closed))
 
 //                .afterTime(5.5, arm.setSlides(2000))
 //                .afterTime(5.8, arm.setArm(pos.grabAboveLow[0][1], 750))
@@ -349,7 +349,7 @@ public class RightAutoTrajectories {
 
                 .afterTime(0, arm.setArm(pos.highRung[0][1]))
                 .afterTime(0, claw.setPos(pos.highRung))
-                .afterTime(1.75, arm.setSlides(750))
+                .afterTime(2.0, arm.setSlides(1000))
 
                 /* - - - - - - - - - - - - - - - - - - - - - - */
 
@@ -368,7 +368,7 @@ public class RightAutoTrajectories {
                 .afterTime(0, arm.setSlides(0))
                 .afterTime(0, arm.setArm(pos.highRung[0][1]))
                 .afterTime(0, claw.setPos(pos.highRung))
-                .afterTime(0.7, arm.setSlides(750))
+                .afterTime(1.75, arm.setSlides(1000))
 
                 /* - - - - - - - - - - - - - - - - - - - - - - */
 
@@ -412,11 +412,11 @@ public class RightAutoTrajectories {
 
         rightToNewSpecimen = rightToNewHang1.endTrajectory().fresh()
 
-                .afterTime(0, claw.setProngs(pos.openXL))
-                .afterTime(0, arm.setSlides(0))
+                .afterTime(0.2, claw.setProngs(pos.openXL))
+                .afterTime(0.1, arm.setSlides(0))
                 .afterTime(1.1, claw.setPos(pos.grabMiddle))
-                .afterTime(1.1, arm.setArm(425))
-                .afterTime(3.0, arm.setSlides(750))
+                .afterTime(1.1, arm.setArm(450))
+                .afterTime(3.2, arm.setSlides(750))
                 .afterTime(3.4, claw.setProngs(pos.closed))
                 .afterTime(3.45, arm.setArm(650))
 
