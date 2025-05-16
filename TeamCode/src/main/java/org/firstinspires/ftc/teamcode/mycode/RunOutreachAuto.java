@@ -24,9 +24,6 @@ public class RunOutreachAuto extends LinearOpMode {
         //Import the autonomous path
         OutreachAuto auto = new OutreachAuto(drive, initialPose, dev);
 
-        //Setup/declare the autonomous path
-        auto.setup();
-
         //Set the servo's to their initial position
         dev.clawWrist.setPosition(.85);
         dev.prong1.setPosition(.49);
@@ -36,6 +33,6 @@ public class RunOutreachAuto extends LinearOpMode {
         waitForStart();
 
         //Run the autonomous path
-        auto.runAuto();
+        auto.runTrajectory();
     }
 }
